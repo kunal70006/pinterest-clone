@@ -16,8 +16,9 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["./components/*"],
-      "@images/*": ["./public/*"]
+      "@components/*": ["./src/components/*"],
+      "@assets/*": ["./public/*"],
+      "@utils/*": ["./src/firebase/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
