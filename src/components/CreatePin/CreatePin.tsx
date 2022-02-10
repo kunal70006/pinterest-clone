@@ -10,12 +10,14 @@ import { collection, addDoc } from 'firebase/firestore';
 
 import upload from '@assets/upload.png';
 import close from '@assets/close.png';
+import Categories from 'src/Utils/Categories';
 
 const CreatePin: NextPage<modalProps> = ({ isModalOpen, handleClose }) => {
   const [pinData, setPinData] = useState({
     title: '',
     imageUrl: '',
     createdBy: '',
+    category: 'Memes',
   });
 
   useEffect(() => {
@@ -27,6 +29,7 @@ const CreatePin: NextPage<modalProps> = ({ isModalOpen, handleClose }) => {
         title: '',
         imageUrl: '',
         createdBy: '',
+        category: 'Memes',
       });
   }, []);
 
@@ -38,7 +41,8 @@ const CreatePin: NextPage<modalProps> = ({ isModalOpen, handleClose }) => {
     if (
       pinData.title !== '' &&
       pinData.createdBy !== '' &&
-      pinData.imageUrl !== ''
+      pinData.imageUrl !== '' &&
+      pinData.category !== ''
     ) {
       try {
         await addDoc(collection(db, 'pins'), pinData);
@@ -46,6 +50,7 @@ const CreatePin: NextPage<modalProps> = ({ isModalOpen, handleClose }) => {
           title: '',
           imageUrl: '',
           createdBy: '',
+          category: 'Memes',
         });
         handleClose();
       } catch (err) {
@@ -74,7 +79,7 @@ const CreatePin: NextPage<modalProps> = ({ isModalOpen, handleClose }) => {
     }
   };
   return isModalOpen ? (
-    <div className=" fixed flex flex-col h-screen w-screen bg-black/30 z-10 items-center justify-center">
+    <div className="fixed flex flex-col h-screen w-screen bg-black/30 z-50 items-center justify-center">
       <div
         className="w-1/3 sm:w-full md:w-1/2 justify-end flex cursor-pointer mr-8"
         onClick={handleClose}
@@ -109,6 +114,21 @@ const CreatePin: NextPage<modalProps> = ({ isModalOpen, handleClose }) => {
         value={pinData.title}
         onChange={handleChange}
       />
+      <select
+        className=" appearance-none transition ease-in-out w-1/3 sm:w-full md:w-1/2 rounded-2xl text-xl tracking-wider mt-4 text-slate-800 bg-slate-100 pl-4 py-2 focus:outline-none"
+        aria-label="Select input"
+        onChange={(e) => setPinData({ ...pinData, category: e.target.value })}
+      >
+        {Categories.map((cat, index: number) => (
+          <option
+            className="bg-slate-100 transition ease-in text-slate-800 font-sans text-lg"
+            value={cat}
+            key={index}
+          >
+            {cat}
+          </option>
+        ))}
+      </select>
       <button
         onClick={uploadPin}
         className="w-1/6 sm:w-full md:w-1/2 rounded-2xl text-xl text-slate-800 tracking-wider mt-4 bg-slate-100 pl-4 py-2 outline-none transition hover:bg-slate-200"

@@ -37,11 +37,11 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="flex flex-wrap mt-8 h-full ">
+    <div className="flex flex-wrap mt-8 h-full">
       {!pins ? (
         <Loader />
       ) : (
-        <Masonry className="flex w-auto" breakpointCols={breakPts}>
+        <Masonry className="flex w-full" breakpointCols={breakPts}>
           {pins &&
             pins.map((pin: pinsState) => (
               <div key={pin.id} className="max-w-sm mx-8 mb-4 flex flex-col">
