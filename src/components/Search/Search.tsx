@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import type { NextPage } from 'next';
+import SearchProps from 'src/Utils/Types/SearchProps';
 import { userStateProps } from 'src/Utils/Types/User';
 import CreatePin from '@components/CreatePin/CreatePin';
 
-const Search = () => {
+const Search: NextPage<SearchProps> = ({ setSearchTerm, setToggle }) => {
   const [user, setUser] = useState<userStateProps>({
     name: '',
     email: '',
@@ -32,11 +34,20 @@ const Search = () => {
   return (
     <>
       <CreatePin isModalOpen={isModalOpen} handleClose={handleClose} />
-      <div className="flex items-center mt-4 text-xl text-slate-800 justify-center">
+      <div className="flex items-center mt-4 lg:text-xl sm:text-sm text-slate-800 justify-center">
+        <div
+          className="lg:hidden sm:flex flex-col mr-6 ml-2 cursor-pointer"
+          onClick={() => setToggle(true)}
+        >
+          <div className="bg-slate-800 w-8 h-1 mb-1 rounded-2xl"></div>
+          <div className="bg-slate-800 w-8 h-1 mb-1 rounded-2xl"></div>
+          <div className="bg-slate-800 w-8 h-1 mb-1 rounded-2xl"></div>
+        </div>
         <input
           type="text"
           className="w-2/3 pl-4 py-2 rounded-2xl outline-none bg-slate-100"
-          placeholder="Search"
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search for pins by title..."
         />
         {user.iconURL !== '' ? (
           <div className="ml-4">
@@ -51,7 +62,7 @@ const Search = () => {
         ) : null}
         <div
           onClick={() => setIsModalOpen(true)}
-          className="ml-8 bg-slate-400 flex items-center text-4xl rounded-full pb-2 px-4 cursor-pointer"
+          className="lg:ml-8 sm:ml-4 bg-slate-400 flex items-center lg:text-4xl sm:text-2xl rounded-full pb-2 px-4 cursor-pointer sm:-mt-1"
         >
           &#43;
         </div>

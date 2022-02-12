@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import { signInWithGoogle } from '@utils/googleSignIn';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { userStateProps } from 'src/Utils/Types/User';
 import camera from '@assets/camera.png';
 import google from '@assets/google.png';
-import { userStateProps } from 'src/Utils/Types/User';
 
 const LandingPage = () => {
   const [user, setUser] = useState<userStateProps>({
@@ -11,6 +12,8 @@ const LandingPage = () => {
     email: '',
     iconURL: '',
   });
+
+  const router = useRouter();
 
   const handleClick = async () => {
     try {
@@ -24,6 +27,7 @@ const LandingPage = () => {
       await setUser(obj);
 
       localStorage.setItem('user', JSON.stringify(obj));
+      router.push('/home');
     } catch (err) {
       console.log(err);
     }

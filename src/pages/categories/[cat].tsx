@@ -8,6 +8,8 @@ import { pinsArr } from 'src/Utils/Types/Pins';
 
 const Index = () => {
   const [pins, setPins] = useState<pinsArr>();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [toggle, setToggle] = useState(false);
   useEffect(() => {
     try {
       const q = query(collection(db, 'pins'));
@@ -27,9 +29,9 @@ const Index = () => {
   }, []);
   return (
     <main className="flex">
-      <Navbar />
-      <div className="flex flex-col ml-60 w-full">
-        <Search />
+      <Navbar toggle={toggle} setToggle={setToggle} />
+      <div className="flex flex-col lg:ml-60 sm:ml-0 w-full">
+        <Search setSearchTerm={setSearchTerm} setToggle={setToggle} />
         <Categories pins={pins} />
       </div>
     </main>

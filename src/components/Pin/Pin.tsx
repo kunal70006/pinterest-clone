@@ -14,9 +14,10 @@ import Navbar from '@components/Navbar/Navbar';
 
 const Pin = () => {
   const router = useRouter();
-  const [pinData, setPinData] = useState<pinsState>();
+  const [pinData, setPinData] = useState<any>();
   const [comment, setComment] = useState('');
   const [addingComment, setAddingComment] = useState(false);
+  const [toggle, setToggle] = useState(false);
   const [user, setUser] = useState<userStateProps>();
   const { id } = router.query;
 
@@ -55,9 +56,9 @@ const Pin = () => {
 
   return (
     <div className="flex">
-      <Navbar />
-      <div className="flex flex-col ml-60 w-full">
-        <Search />
+      <Navbar toggle={toggle} setToggle={setToggle} />
+      <div className="flex flex-col lg:ml-60 sm:ml-0 w-full">
+        <Search setToggle={setToggle} />
         <div className="flex flex-col my-8 mx-8">
           {!pinData ? (
             <Loader />
@@ -84,7 +85,7 @@ const Pin = () => {
                     />
                   </a>
                 </div>
-                <p className="text-6xl">{pinData.title}</p>
+                <p className="lg:text-6xl sm:text-4xl">{pinData.title}</p>
                 <p className="mt-4 text-md">{pinData.createdBy}</p>
                 <h1 className="mt-10 text-4xl">Comments</h1>
                 <div className="my-4">
@@ -103,7 +104,7 @@ const Pin = () => {
                     </h1>
                   )}
                 </div>
-                <div className="flex items-center mt-4 ">
+                <div className="flex items-center mt-4 sm:w-full">
                   <Image
                     src={user.iconURL}
                     alt="user icon"
@@ -117,11 +118,11 @@ const Pin = () => {
                     maxLength={48}
                     onChange={(e) => setComment(e.target.value)}
                     value={comment}
-                    className="ml-8 w-1/5 border-2 outline-none rounded-xl text-xl px-4 py-2 font-normal text-slate-800"
+                    className="lg:ml-8 sm:ml-0 lg:w-1/5 sm:w-full border-2 outline-none rounded-xl lg:text-xl sm:text-sm px-4 py-2 font-normal text-slate-800"
                   />
                   <button
                     onClick={addComment}
-                    className="ml-4 bg-slate-400 rounded-2xl px-4 py-2 font-medium text-lg transition-colors hover:bg-slate-600 hover:text-slate-50"
+                    className="ml-4 bg-slate-400 rounded-2xl px-4 py-2 font-medium lg:text-lg sm:text-sm transition-colors hover:bg-slate-600 hover:text-slate-50"
                   >
                     {addingComment ? 'Posting the comment...' : 'Post!'}
                   </button>
