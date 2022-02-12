@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { query, collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@utils/firebase.config';
 import { pinsArr } from 'src/Utils/Types/Pins';
+import Head from 'next/head';
 
 const Index = () => {
   const [pins, setPins] = useState<pinsArr>();
@@ -28,13 +29,18 @@ const Index = () => {
     }
   }, []);
   return (
-    <main className="flex">
-      <Navbar toggle={toggle} setToggle={setToggle} />
-      <div className="flex flex-col lg:ml-60 sm:ml-0 w-full">
-        <Search setSearchTerm={setSearchTerm} setToggle={setToggle} />
-        <Categories pins={pins} />
-      </div>
-    </main>
+    <>
+      <Head>
+        <title>Share Me</title>
+      </Head>
+      <main className="flex">
+        <Navbar toggle={toggle} setToggle={setToggle} />
+        <div className="flex flex-col lg:ml-60 sm:ml-0 w-full">
+          <Search setSearchTerm={setSearchTerm} setToggle={setToggle} />
+          <Categories pins={pins} />
+        </div>
+      </main>
+    </>
   );
 };
 export default Index;

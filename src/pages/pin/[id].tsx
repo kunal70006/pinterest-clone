@@ -1,7 +1,15 @@
 import Pin from '@components/Pin/Pin';
+import Head from 'next/head';
 
 const ViewPin = () => {
-  return <Pin />;
+  return (
+    <>
+      <Head>
+        <title>Share Me</title>
+      </Head>
+      <Pin />
+    </>
+  );
 };
 
 export default ViewPin;
