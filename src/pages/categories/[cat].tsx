@@ -37,7 +37,7 @@ const Index = () => {
         <Navbar toggle={toggle} setToggle={setToggle} />
         <div className="flex flex-col lg:ml-60 sm:ml-0 w-full">
           <Search setSearchTerm={setSearchTerm} setToggle={setToggle} />
-          <Categories pins={pins} />
+          <Categories pins={pins} searchTerm={searchTerm} />
         </div>
       </main>
     </>

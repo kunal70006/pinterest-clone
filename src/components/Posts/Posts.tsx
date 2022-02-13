@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
-import Masonry from 'react-masonry-css';
-import Link from 'next/link';
 import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { CateogoryPinsProp } from 'src/Utils/Types/CategoryPins';
-import { pinsArr } from 'src/Utils/Types/Pins';
-import { pinsState } from 'src/Utils/Types/Pins';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import Masonry from 'react-masonry-css';
+import Loader from 'src/Utils/Loader';
+import GetUser from 'src/Utils/GetUser';
+import PostProps from 'src/Utils/Types/PostProps';
+import { db } from '@utils/firebase.config';
+import { pinsArr, pinsState } from 'src/Utils/Types/Pins';
 
-const Categories: NextPage<CateogoryPinsProp> = ({ pins, searchTerm }) => {
-  const router = useRouter();
-  const { cat } = router.query;
-  const [filteredPins, setFilteredPins] = useState<pinsArr>();
+const Posts: NextPage<PostProps> = ({ searchTerm }) => {
+  const [posts, setPosts] = useState<pinsArr>();
   const breakPts = {
     default: 5,
     1100: 3,
@@ -19,22 +19,35 @@ const Categories: NextPage<CateogoryPinsProp> = ({ pins, searchTerm }) => {
     500: 1,
   };
   useEffect(() => {
-    const filter = pins?.filter(
-      (i) =>
-        i?.category?.toLocaleLowerCase() ===
-        cat.toLocaleString().toLocaleLowerCase()
-    );
-    setFilteredPins(filter);
-  }, [cat, pins]);
+    const getPostsByUser = async () => {
+      const user = GetUser();
+      try {
+        const q = query(
+          collection(db, 'pins'),
+          where('createdBy', '==', user?.name)
+        );
+        const qSnap = await getDocs(q);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const pinArr: any = [];
+        qSnap.forEach((doc) => {
+          pinArr.push({ ...doc.data(), id: doc.id });
+        });
+        setPosts(pinArr);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getPostsByUser();
+  }, []);
 
   return (
     <div className="flex flex-wrap mt-8 h-full">
-      {filteredPins?.length === 0 ? (
-        <h1 className="mx-8 text-lg font-medium">No Pins Found ://</h1>
+      {!posts ? (
+        <Loader />
       ) : (
         <Masonry className="flex w-full" breakpointCols={breakPts}>
-          {filteredPins &&
-            filteredPins.map((pin: pinsState) => {
+          {posts &&
+            posts.map((pin: pinsState) => {
               if (
                 pin.title
                   .toLocaleLowerCase()
@@ -45,7 +58,7 @@ const Categories: NextPage<CateogoryPinsProp> = ({ pins, searchTerm }) => {
                     key={pin.id}
                     className="max-w-sm mx-8 mb-4 flex flex-col"
                   >
-                    <Link href={`/pin/${pin.id}`} passHref>
+                    <Link href={`pin/${pin.id}`} passHref>
                       <img
                         src={pin.imageUrl}
                         alt="pin image"
@@ -65,4 +78,4 @@ const Categories: NextPage<CateogoryPinsProp> = ({ pins, searchTerm }) => {
   );
 };
 
-export default Categories;
+export default Posts;

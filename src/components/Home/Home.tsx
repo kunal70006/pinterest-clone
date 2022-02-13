@@ -29,7 +29,6 @@ const Home: NextPage<HomeProps> = ({ searchTerm }) => {
         });
         setPins(pinArr);
       });
-
       return () => temp();
     } catch (err) {
       console.log(err);
@@ -44,7 +43,11 @@ const Home: NextPage<HomeProps> = ({ searchTerm }) => {
         <Masonry className="flex w-full" breakpointCols={breakPts}>
           {pins &&
             pins.map((pin: pinsState) => {
-              if (pin.title.includes(searchTerm))
+              if (
+                pin.title
+                  .toLocaleLowerCase()
+                  .includes(searchTerm.toLocaleLowerCase())
+              )
                 return (
                   <div
                     key={pin.id}

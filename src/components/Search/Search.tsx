@@ -4,6 +4,7 @@ import type { NextPage } from 'next';
 import SearchProps from 'src/Utils/Types/SearchProps';
 import { userStateProps } from 'src/Utils/Types/User';
 import CreatePin from '@components/CreatePin/CreatePin';
+import Link from 'next/link';
 
 const Search: NextPage<SearchProps> = ({ setSearchTerm, setToggle }) => {
   const [user, setUser] = useState<userStateProps>({
@@ -50,15 +51,17 @@ const Search: NextPage<SearchProps> = ({ setSearchTerm, setToggle }) => {
           placeholder="Search for pins by title..."
         />
         {user.iconURL !== '' ? (
-          <div className="ml-4">
-            <Image
-              src={user.iconURL}
-              height={48}
-              width={48}
-              alt="profile icon"
-              className=" rounded-full"
-            />
-          </div>
+          <Link href="/posts" passHref>
+            <div className="ml-4 cursor-pointer">
+              <Image
+                src={user.iconURL}
+                height={48}
+                width={48}
+                alt="profile icon"
+                className=" rounded-full"
+              />
+            </div>
+          </Link>
         ) : null}
         <div
           onClick={() => setIsModalOpen(true)}
